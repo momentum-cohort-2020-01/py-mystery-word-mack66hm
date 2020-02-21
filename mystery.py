@@ -3,7 +3,7 @@ import random
 class Game:
     def __init__(self):
         self.player = Player("Player")
-        self.game_word_letters = []
+        self.word_letters = []
         self.blank_list = []
 
 
@@ -14,16 +14,16 @@ class Game:
         print("There are 3 different levels: " " (E)asy gives you a word between 4-6 letters." " (M)edium gives you a word between 7-8 letters." " (H)ard gives you a word with 8 or more letters.")
         diff = input("Which level do you want to play: ")
         diff = diff.lower()
-        if diff == 'e' or diff == "easy":
+        if diff == 'e':
             word_list = [word for word in data.split() if len(word) >3 and len(word) < 7]
-        elif diff == 'm' or diff == 'medium':
+        elif diff == 'm':
             word_list = [word for word in data.split() if len(word) >6 and len(word) < 9]
-        elif diff == 'h' or diff == 'hard':
+        elif diff == 'h':
             word_list = [word for word in data.split() if len(word) > 8]
         else:
             print("Please pick which level.")
             Game().play_game()
-        print('Guess one letter at a time until the whole word is shown. You have 8 guesses!')
+        print('Guess one letter at a time until the whole word is shown. You have 8 wrong guesses!')
         word = random.choice(word_list)
         word = word.lower()
         print(word)
@@ -39,11 +39,10 @@ class Game:
                 choice = input("What is your guess: ")
                 choice.lower()
                 if choice.isalpha() and len(choice) == 1:
-                    print(choice)
                     if choice in guessing_list:
                         print("You already have guessed this letter try again")
                     elif choice in word_letters:
-                        index_position_list = self.get_index_positions(word_letters, choice)
+                        index_position_list = self.find_index_positions(word_letters, choice)
                         choice_list = len(index_position_list) * [choice,]
                         for (index, choice) in zip(index_position_list, choice_list):
                             blank_list[index] = choice
@@ -61,20 +60,19 @@ class Game:
                     break
             playing = False
             self.start_new_won(word)
-    
 
     
-    def get_index_positions(self, word_letters, choice):
-        index_position_list = []
-        index_position = 0
-        while True:
-            try:
-                index_position = game_word_letters.index(choice, index_position)
-                index_position_list.append(index_pos)
-                index_position += 1
-            except:
-                break
-        return index_position_list  
+    # def find_index_positions(self, word_letters, choice):
+    #     index_position_list = []
+    #     index_position = 0
+    #     while True:
+    #         try:
+    #             index_position = word_letters.index(choice, index_position)
+    #             index_position_list.append(index_pos)
+    #             index_position += 1
+    #         except:
+    #             break
+    #     return index_position_list  
 
 
     # def list_to_string(self, blank_list):
@@ -101,6 +99,19 @@ class Game:
             Game().play_game()
         else:
             exit()
+
+
+    def find_index_positions(self, word_letters, choice):
+        index_position_list = []
+        index_position = 0
+        while True:
+            try:
+                index_position = word_letters.index(choice, index_position)
+                index_position_list.append(index_position)
+                index_position += 1
+            except:
+                break
+        return index_position_list  
     
 
 
